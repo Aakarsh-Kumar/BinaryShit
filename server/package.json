@@ -10,7 +10,8 @@
   },
   "hostname": [
     "binary-shit.vercel.app",
-    "binary-shit-server.vercel.app"
+    "binary-shit-server.vercel.app",
+    "*"
   ],
   "dependencies": {
     "cors": "^2.8.5",

@@ -145,7 +145,7 @@ const Card = ({
     >
       <div className="flex justify-between items-start mb-2">
         <div className="bg-white bg-opacity-80 px-2 py-1 rounded-md">
-          <p className="text-sm font-bold">To: {recipient}</p>
+          <p className=" font-bold break-all">To: {recipient}</p>
         </div>
         <button
           onClick={(e) => {
@@ -158,9 +158,9 @@ const Card = ({
         </button>
       </div>
       <div className="bg-white bg-opacity-70 p-3 rounded-md min-h-24">
-        <p className="text-gray-800 font-medium">{message}</p>
+        <p className="text-gray-800 font-medium break-words">{message}</p>
       </div>
-      <div className="flex justify-end mt-2">
+      <div className="flex justify-start mt-2">
         <span className="text-xl">{emoji}</span>
         <span className="text-sm text-gray-700 italic">- shitpost #{id}</span>
       </div>
