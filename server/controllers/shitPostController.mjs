@@ -9,9 +9,6 @@ export const getShitPosts = async (req, res) => {
         // Fetch shitposts with pagination
         const shitposts = await getShitPostsModel(limit, skipIndex);
     
-        // Optional: Count total posts for frontend reference
-        // const totalPosts = await Shitpost.countDocuments();
-        console.log(shitposts);
         let totalPosts = shitposts.length;
     
         res.status(200).json({
@@ -33,7 +30,6 @@ export const createShitPost = async (req, res) => {
     console.log("Creating shitpost");
     try {
         let shitPost = await createShitPostModel(req.body);
-        console.log(shitPost);
         res.status(201).json(shitPost);
     } catch (e) {
         console.error(e);

@@ -280,7 +280,6 @@ const ShitpostGenerator = () => {
         throw new Error("Network response was not ok");
       }
       const newShitposts = await response.json();
-      console.log("Responsesss", newShitposts);
 
       // If less than 10 posts are returned, we've reached the end
       if (newShitposts.posts.length < 10) {
