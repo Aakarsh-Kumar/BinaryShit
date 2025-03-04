@@ -1,0 +1,21 @@
+{
+  "name": "server",
+  "module": "index.mjs",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "scripts": {
+    "start": "nodemon index.mjs"
+  },
+  "hostname": [
+    "binary-shit.vercel.app",
+    "binary-shit-server.vercel.app"
+  ],
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongodb": "^6.14.1"
+  }
+}
