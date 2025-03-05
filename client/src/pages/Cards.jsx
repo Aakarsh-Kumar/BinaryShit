@@ -240,7 +240,10 @@ const PostModal = ({ isOpen, onClose, onSubmit }) => {
               required
             />
           </div>
-
+          <div
+            className="g-recaptcha"
+            data-sitekey="6Le1L-oqAAAAABbgQgmvMRifmUhPkendZGIIqFlX"
+          ></div>
           <button
             type="submit"
             className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 rounded-full hover:from-purple-600 hover:to-pink-600 transition-colors"

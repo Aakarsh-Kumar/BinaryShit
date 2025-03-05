@@ -8,25 +8,25 @@ const sanitizeInput = (obj) => {
 
   for (let key in obj) {
     if (key.startsWith("$") || key.includes(".")) {
-      delete obj[key]; // Remove dangerous keys
-    } else if (typeof obj[key] === "string") {
-      // Sanitize string values to remove harmful content
-      obj[key] = sanitizeHtml(obj[key], {
-        allowedTags: [], // No HTML tags allowed
-        allowedAttributes: {},
-      });
+      throw new Error(`Invalid key detected: ${key}`);
+    }
 
-      // Block potential MongoDB injection patterns
-      if (/^\$/.test(obj[key])) {
-        obj[key] = ""; // Remove dangerous values starting with $
+    if (typeof obj[key] === "string") {
+      let sanitizedValue = sanitizeHtml(obj[key], {
+        allowedTags: [],
+        allowedAttributes: {},
+      }).trim();
+      if(sanitizedValue.length>200){
+        throw new Error(`Invalid length value detected in key: ${key}`);
       }
-    } else if (typeof obj[key] === "object") {
-      sanitizeInput(obj[key]); // Recursively sanitize nested objects
+      // Block potential MongoDB injection patterns
+      if (/^\$/.test(sanitizedValue)) {
+        throw new Error(`Invalid value detected in key: ${key}`);
+      }
     }
   }
-  return obj;
+  return obj; // If valid, return the object as is
 };
-
 // Middleware to sanitize request body
 export const sanitizeRequestBody = (req, res, next) => {
   req.body = sanitizeInput(req.body);
@@ -60,26 +60,36 @@ export const getShitPosts = async (req, res) => {
 // Create a new shitpost
 export const createShitPost = async (req, res) => {
   console.log("Creating shitpost");
-
-  // Sanitize request body before processing
-  await body("message").notEmpty().withMessage("Message is required").run(req);
   console.log(req.body);
-    
+  // Validate message field: must be a non-empty string
+  await body("message")
+    .notEmpty().withMessage("Message is required")
+    .isString().withMessage("Message must be a string")
+    .trim()
+    .escape()
+    .run(req);
+
   const errors = validationResult(req);
-  console.log(errors.array());
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  try {
-    req.body.message = sanitizeHtml(req.body.message, {
-      allowedTags: [],
-      allowedAttributes: {},
-    });
 
+  // Check if message contains an object or array
+  if (typeof req.body.message !== "string") {
+    return res.status(400).json({ error: "Invalid message format. Must be a string." });
+  }
+
+  // Sanitize message
+  req.body.message = sanitizeHtml(req.body.message, {
+    allowedTags: [], // Remove all HTML tags
+    allowedAttributes: {},
+  });
+
+  try {
     let shitPost = await createShitPostModel(req.body);
     res.status(201).json(shitPost);
   } catch (e) {
-    console.error(e);
+    console.error("hi",e);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
