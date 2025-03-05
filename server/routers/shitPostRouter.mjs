@@ -1,9 +1,9 @@
 import { Router } from 'express';
 const router = Router();
 
-import {getShitPosts,createShitPost}  from '../controllers/shitPostController.mjs';
+import {getShitPosts,createShitPost,sanitizeRequestBody}  from '../controllers/shitPostController.mjs';
 
 router.get("/posts", getShitPosts);
-router.post("/posts", createShitPost);
+router.post("/posts",sanitizeRequestBody, createShitPost);
 
 export default router;
