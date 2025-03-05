@@ -273,7 +273,7 @@ const ShitpostGenerator = () => {
       const response = await fetch(
         `${
           import.meta.env.VITE_BASE_API_URL
-        }/api/shitpost/posts?page=${pageNum}&limit=10`
+        }/api/shitpost/posts?page=${pageNum}&limit=5`
       );
 
       if (!response.ok) {
@@ -282,7 +282,7 @@ const ShitpostGenerator = () => {
       const newShitposts = await response.json();
 
       // If less than 10 posts are returned, we've reached the end
-      if (newShitposts.posts.length < 10) {
+      if (newShitposts.posts.length < 5) {
         setHasMore(false);
       }
       // Generate positions for new cards
@@ -375,6 +375,7 @@ const ShitpostGenerator = () => {
   };
 
   const loadMoreCards = () => {
+    setCards([]);
     fetchShitposts(page + 1);
   };
 
