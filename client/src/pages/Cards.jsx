@@ -285,7 +285,6 @@ const ShitpostGenerator = () => {
       if (newShitposts.posts.length < 10) {
         setHasMore(false);
       }
-
       // Generate positions for new cards
       const newCards = newShitposts.posts.map((shitpost) => ({
         id: shitpost._id || shitpost.id,
@@ -391,7 +390,6 @@ const ShitpostGenerator = () => {
       if (containerRef.current) {
         const maxWidth = containerRef.current.clientWidth - 280;
         const maxHeight = containerRef.current.clientHeight - 200;
-
         setCards((prevCards) =>
           prevCards.map((card) => ({
             ...card,

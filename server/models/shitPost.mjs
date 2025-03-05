@@ -6,7 +6,7 @@ export async function getShitPostsModel(limit, skipIndex) {
     .skip(skipIndex)
     .limit(limit)
     .toArray();
-    return results;
+    return results.reverse();
 }
 export async function createShitPostModel(post) {
   post.createdAt = new Date(new Date().getTime() + 5 * 60 * 60 * 1000 + 30 * 60 * 1000);
