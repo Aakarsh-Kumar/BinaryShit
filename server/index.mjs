@@ -1,6 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import shitPostRouter from './routers/shitPostRouter.mjs';
+import rateLimit from 'express-rate-limit';
+import helmet from 'helmet';
 
 const app = express();
 dotenv.config();
@@ -8,7 +10,6 @@ import cors from 'cors';
 const PORT = process.env.PORT || 8080;
 
 const allowedOrigins = process.env.ALLOWED_ORIGINS.split(",");
-console.log(allowedOrigins);
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -24,6 +25,24 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(express.json());
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 50, // limit each IP to 100 requests per windowMs
+  message: "Too many requests, please try again after some time",
+});
+
+app.use(limiter);  
+
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        "script-src": ["'self'", "https://www.google.com/recaptcha/"],
+      },
+    },
+  }),
+);
 app.use('/api/shitpost', shitPostRouter);
 
 app.all('*', (req, res, next) => {

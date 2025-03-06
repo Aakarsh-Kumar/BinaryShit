@@ -192,7 +192,6 @@ const PostModal = ({ isOpen, onClose, onSubmit }) => {
 
   if (!isOpen) return null;
   const handleCaptchaChange = (value) => {
-    console.log("reCAPTCHA Value:", value);
     setCaptchaValue(value);
   };
   return (
@@ -246,7 +245,7 @@ const PostModal = ({ isOpen, onClose, onSubmit }) => {
             />
           </div>
           <ReCAPTCHA
-            sitekey="6Le1L-oqAAAAABbgQgmvMRifmUhPkendZGIIqFlX" // Replace with your actual Site Key
+            sitekey={import.meta.env.VITE_RECAPTCHA_SITEKEY} // Replace with your actual Site Key
             onChange={handleCaptchaChange}
           />
           <button
