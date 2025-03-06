@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { X, RotateCw } from "lucide-react";
 import logoImg from "../assets/logo/logo.png";
+import ReCAPTCHA from "react-google-recaptcha";
 
 // Random colors for cards
 const cardColors = [
@@ -170,6 +171,7 @@ const Card = ({
 const PostModal = ({ isOpen, onClose, onSubmit }) => {
   const [recipient, setRecipient] = useState("");
   const [message, setMessage] = useState("");
+  const [captchaValue, setCaptchaValue] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -180,7 +182,7 @@ const PostModal = ({ isOpen, onClose, onSubmit }) => {
       return;
     }
 
-    onSubmit({ recipient, message });
+    onSubmit({ recipient, message, captchaValue });
 
     // Reset form
     setRecipient("");
@@ -189,7 +191,10 @@ const PostModal = ({ isOpen, onClose, onSubmit }) => {
   };
 
   if (!isOpen) return null;
-
+  const handleCaptchaChange = (value) => {
+    console.log("reCAPTCHA Value:", value);
+    setCaptchaValue(value);
+  };
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
       <div className="bg-white rounded-xl shadow-2xl w-96 p-6 relative">
@@ -240,10 +245,10 @@ const PostModal = ({ isOpen, onClose, onSubmit }) => {
               required
             />
           </div>
-          <div
-            className="g-recaptcha"
-            data-sitekey="6Le1L-oqAAAAABbgQgmvMRifmUhPkendZGIIqFlX"
-          ></div>
+          <ReCAPTCHA
+            sitekey="6Le1L-oqAAAAABbgQgmvMRifmUhPkendZGIIqFlX" // Replace with your actual Site Key
+            onChange={handleCaptchaChange}
+          />
           <button
             type="submit"
             className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 rounded-full hover:from-purple-600 hover:to-pink-600 transition-colors"

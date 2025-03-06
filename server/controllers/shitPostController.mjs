@@ -28,9 +28,19 @@ const sanitizeInput = (obj) => {
   return obj; // If valid, return the object as is
 };
 // Middleware to sanitize request body
-export const sanitizeRequestBody = (req, res, next) => {
-  req.body = sanitizeInput(req.body);
-  next();
+export const sanitizeRequestBody = async(req, res, next) => {
+  try {
+    const isHuman = await recaptchaVerified(req.body.captchaValue);
+    if (!isHuman) {
+      return res.status(400).json({ error: "Invalid reCAPTCHA token" });
+    }
+    delete req.body.captchaValue;
+
+    req.body = sanitizeInput(req.body);
+    next();
+  } catch (error) {
+    return res.status(500).json({ error: "reCAPTCHA verification failed" });
+  }
 };
 
 // Get shitposts with pagination
@@ -56,11 +66,18 @@ export const getShitPosts = async (req, res) => {
     });
   }
 };
-
+const recaptchaVerified = async (token) => {
+  const secret = process.env.RECAPTCHA_SECRET;
+  const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${token}`;
+  
+  const response = await fetch(url, { method: 'POST' });
+  const data = await response.json();
+  return data.success;
+};
 // Create a new shitpost
 export const createShitPost = async (req, res) => {
   console.log("Creating shitpost");
-  console.log(req.body);
+  console.log(req.body.message, req.body.recipient);
   // Validate message field: must be a non-empty string
   await body("message")
     .notEmpty().withMessage("Message is required")
@@ -69,6 +86,7 @@ export const createShitPost = async (req, res) => {
     .escape()
     .run(req);
 
+    
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -84,12 +102,11 @@ export const createShitPost = async (req, res) => {
     allowedTags: [], // Remove all HTML tags
     allowedAttributes: {},
   });
-
   try {
     let shitPost = await createShitPostModel(req.body);
     res.status(201).json(shitPost);
   } catch (e) {
-    console.error("hi",e);
+    console.error(e);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
