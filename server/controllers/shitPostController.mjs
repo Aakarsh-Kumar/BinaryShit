@@ -1,8 +1,7 @@
 import { getShitPostsModel, createShitPostModel } from "../models/shitPost.mjs";
 import { body, validationResult } from "express-validator";
 import sanitizeHtml from "sanitize-html";
-
-// Function to remove MongoDB operators from input
+t
 const sanitizeInput = (obj) => {
   if (typeof obj !== "object" || obj === null) return obj;
 
@@ -19,15 +18,13 @@ const sanitizeInput = (obj) => {
       if(sanitizedValue.length>200){
         throw new Error(`Invalid length value detected in key: ${key}`);
       }
-      // Block potential MongoDB injection patterns
       if (/^\$/.test(sanitizedValue)) {
         throw new Error(`Invalid value detected in key: ${key}`);
       }
     }
   }
-  return obj; // If valid, return the object as is
+  return obj; 
 };
-// Middleware to sanitize request body
 export const sanitizeRequestBody = async(req, res, next) => {
   try {
     const isHuman = await recaptchaVerified(req.body.captchaValue);
@@ -43,7 +40,6 @@ export const sanitizeRequestBody = async(req, res, next) => {
   }
 };
 
-// Get shitposts with pagination
 export const getShitPosts = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -92,14 +88,12 @@ export const createShitPost = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  // Check if message contains an object or array
   if (typeof req.body.message !== "string") {
     return res.status(400).json({ error: "Invalid message format. Must be a string." });
   }
 
-  // Sanitize message
   req.body.message = sanitizeHtml(req.body.message, {
-    allowedTags: [], // Remove all HTML tags
+    allowedTags: [], 
     allowedAttributes: {},
   });
   try {

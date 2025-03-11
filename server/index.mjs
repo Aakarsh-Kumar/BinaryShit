@@ -18,8 +18,8 @@ const corsOptions = {
       callback(new Error("Not allowed by CORS, Dont try to play around with me"));
     }
   },
-  methods: ["GET", "POST"], // Allowed HTTP methods
-  allowedHeaders: ["Content-Type"], // Allowed headers
+  methods: ["GET", "POST"], 
+  allowedHeaders: ["Content-Type"],
   credentials: false,
 
 };
@@ -27,8 +27,8 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 50, // limit each IP to 100 requests per windowMs
+  windowMs: 15 * 60 * 1000, 
+  max: 150,
   message: "Too many requests, please try again after some time",
 });
 
