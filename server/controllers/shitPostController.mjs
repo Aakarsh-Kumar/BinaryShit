@@ -1,7 +1,7 @@
 import { getShitPostsModel, createShitPostModel } from "../models/shitPost.mjs";
 import { body, validationResult } from "express-validator";
 import sanitizeHtml from "sanitize-html";
-t
+
 const sanitizeInput = (obj) => {
   if (typeof obj !== "object" || obj === null) return obj;
 
