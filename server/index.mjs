@@ -68,5 +68,5 @@ app.all("*", (req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  logger.info(`🚀 Server is running on port ${PORT}`);
+  logger.info(`Server is running on port ${PORT}`);
 });
