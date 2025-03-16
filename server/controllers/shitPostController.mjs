@@ -70,11 +70,9 @@ const recaptchaVerified = async (token) => {
   const data = await response.json();
   return data.success;
 };
-// Create a new shitpost
 export const createShitPost = async (req, res) => {
   console.log("Creating shitpost");
   console.log(req.body.message, req.body.recipient);
-  // Validate message field: must be a non-empty string
   await body("message")
     .notEmpty().withMessage("Message is required")
     .isString().withMessage("Message must be a string")

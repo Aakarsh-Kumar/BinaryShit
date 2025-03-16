@@ -3,7 +3,6 @@ import { X, RotateCw } from "lucide-react";
 import logoImg from "../assets/logo/logo.png";
 import ReCAPTCHA from "react-google-recaptcha";
 
-// Random colors for cards
 const cardColors = [
   "bg-pink-300",
   "bg-purple-300",
@@ -35,7 +34,6 @@ const randomEmojis = [
 const getRandomItem = (array) =>
   array[Math.floor(Math.random() * array.length)];
 
-// Card component with mobile touch support
 const Card = ({
   id,
   initialX,
@@ -50,9 +48,8 @@ const Card = ({
   const [isDragging, setIsDragging] = useState(false);
   const cardRef = useRef(null);
   const dragStartPos = useRef({ x: 0, y: 0 });
-  const rotation = Math.random() * 6 - 3; // Random slight rotation between -3 and 3 degrees
+  const rotation = Math.random() * 6 - 3;
 
-  // Handle mouse events for desktop
   const handleMouseDown = (e) => {
     const rect = cardRef.current.getBoundingClientRect();
     dragStartPos.current = {
@@ -75,9 +72,8 @@ const Card = ({
     setIsDragging(false);
   };
 
-  // Handle touch events for mobile
   const handleTouchStart = (e) => {
-    e.preventDefault(); // Prevent scrolling while dragging
+    e.preventDefault();
     const touch = e.touches[0];
     const rect = cardRef.current.getBoundingClientRect();
     dragStartPos.current = {
@@ -102,12 +98,10 @@ const Card = ({
   };
 
   useEffect(() => {
-    // Mouse event listeners
     if (isDragging) {
       document.addEventListener("mousemove", handleMouseMove);
       document.addEventListener("mouseup", handleMouseUp);
 
-      // Touch event listeners
       document.addEventListener("touchmove", handleTouchMove, {
         passive: false,
       });
@@ -150,7 +144,7 @@ const Card = ({
         </div>
         <button
           onClick={(e) => {
-            e.stopPropagation(); // Prevent triggering drag when removing
+            e.stopPropagation();
             onRemove(id);
           }}
           className="text-gray-700 hover:text-red-500 transition-colors"
@@ -176,7 +170,6 @@ const PostModal = ({ isOpen, onClose, onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (!recipient.trim() || !message.trim()) {
       alert("Please fill in both recipient and message");
       return;
@@ -184,7 +177,6 @@ const PostModal = ({ isOpen, onClose, onSubmit }) => {
 
     onSubmit({ recipient, message, captchaValue });
 
-    // Reset form
     setRecipient("");
     setMessage("");
     onClose();
@@ -245,7 +237,7 @@ const PostModal = ({ isOpen, onClose, onSubmit }) => {
             />
           </div>
           <ReCAPTCHA
-            sitekey={import.meta.env.VITE_RECAPTCHA_SITEKEY} // Replace with your actual Site Key
+            sitekey={import.meta.env.VITE_RECAPTCHA_SITEKEY}
             onChange={handleCaptchaChange}
           />
           <button
@@ -259,7 +251,6 @@ const PostModal = ({ isOpen, onClose, onSubmit }) => {
     </div>
   );
 };
-// Main component
 const ShitpostGenerator = () => {
   const [cards, setCards] = useState([]);
   const [page, setPage] = useState(1);
@@ -270,13 +261,11 @@ const ShitpostGenerator = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Fetch shitposts from server
   const fetchShitposts = async (pageNum) => {
     if (isLoading) return;
 
     setIsLoading(true);
     try {
-      // Replace with your actual API endpoint
       const response = await fetch(
         `${
           import.meta.env.VITE_BASE_API_URL
@@ -288,11 +277,9 @@ const ShitpostGenerator = () => {
       }
       const newShitposts = await response.json();
 
-      // If less than 10 posts are returned, we've reached the end
       if (newShitposts.posts.length < 5) {
         setHasMore(false);
       }
-      // Generate positions for new cards
       const newCards = newShitposts.posts.map((shitpost) => ({
         id: shitpost._id || shitpost.id,
         x: generateRandomPosition().x,
@@ -303,15 +290,12 @@ const ShitpostGenerator = () => {
         color: getRandomItem(cardColors),
       }));
 
-      // Update cards state
       setCards((prevCards) =>
         pageNum === 1 ? newCards : [...prevCards, ...newCards]
       );
 
-      // Hide intro if cards are loaded
       setShowIntro(false);
 
-      // Increment page
       setPage(pageNum);
     } catch (error) {
       console.error("Error fetching shitposts:", error);
@@ -339,7 +323,6 @@ const ShitpostGenerator = () => {
 
       const newShitpost = await response.json();
 
-      // Add the new card to the top of the list
       const newCard = {
         id: newShitpost.insertedId || newShitpost.id,
         x: generateRandomPosition().x,
@@ -359,17 +342,15 @@ const ShitpostGenerator = () => {
     }
   };
 
-  // Initial fetch on component mount
   useEffect(() => {
     fetchShitposts(1);
   }, []);
 
-  // Generate random position within container bounds
   const generateRandomPosition = () => {
     if (!containerRef.current) return { x: 50, y: 50 };
 
-    const width = containerRef.current.clientWidth - 280; // card width + padding
-    const height = containerRef.current.clientHeight - 200; // card height + padding
+    const width = containerRef.current.clientWidth - 280;
+    const height = containerRef.current.clientHeight - 200;
 
     return {
       x: Math.max(20, Math.floor(Math.random() * width)),
@@ -386,11 +367,10 @@ const ShitpostGenerator = () => {
     fetchShitposts(page + 1);
   };
 
-  // Prevent pull-to-refresh and handle window resize
   useEffect(() => {
     const preventRefresh = (e) => {
       if (window.scrollY === 0 && e.touches[0].clientY > 0) {
-        e.preventDefault(); // Block pull-to-refresh
+        e.preventDefault();
       }
     };
 
@@ -422,21 +402,18 @@ const ShitpostGenerator = () => {
       className="bg-gray-100 w-full h-dvh overflow-hidden relative"
       ref={containerRef}
     >
-      {/* Background patterns */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <div className="absolute top-10 left-10 w-32 h-32 bg-yellow-200 rounded-full opacity-20"></div>
         <div className="absolute bottom-20 right-20 w-64 h-64 bg-pink-200 rounded-full opacity-30"></div>
         <div className="absolute top-1/3 right-1/4 w-48 h-48 bg-blue-200 rounded-full opacity-20"></div>
       </div>
 
-      {/* Header */}
       <div className="relative z-20 flex justify-between items-center bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 shadow-md">
         <img
           src={logoImg}
           alt="logo"
           className="ml-1 h-12 w-30 sm:w-20 sm-10 md:h-10 md:w-30 "
         />
-        {/* <h1 className="text-white text-2xl font-bold">BinaryShit</h1> */}
         <div className="flex items-center space-x-4 p-4">
           <button
             onClick={() => setIsModalOpen(true)}
@@ -471,7 +448,6 @@ const ShitpostGenerator = () => {
         </div>
       </div>
 
-      {/* Cards */}
       {cards.map((card) => (
         <Card
           key={card.id}
@@ -483,11 +459,9 @@ const ShitpostGenerator = () => {
           color={card.color}
           emoji={card.emoji}
           onRemove={removeCard}
-          style={{ willChange: "transform" }} // Smooth rendering
+          style={{ willChange: "transform" }}
         />
       ))}
-
-      {/* Intro message */}
       {showIntro && cards.length === 0 && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center p-6 bg-white rounded-xl shadow-lg max-w-md z-20">
           <h2 className="text-xl font-bold mb-3">Welcome to the Chaos!</h2>
