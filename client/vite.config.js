@@ -6,6 +6,8 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [react(),tailwindcss(),],
   server: {
-    allowedHosts: ["binary-shit.vercel.app", "binary-shit-server.vercel.app"],
+    host: '0.0.0.0', // Listen on all network interfaces
+    port: 5173,
+    allowedHosts: 'all', // Allow all hosts for development
   }
 })
