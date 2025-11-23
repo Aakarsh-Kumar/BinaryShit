@@ -6,8 +6,12 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [react(),tailwindcss(),],
   server: {
-    host: '0.0.0.0', // Listen on all network interfaces
+    host: true, // Listen on all network interfaces (0.0.0.0)
     port: 5173,
-    allowedHosts: 'all', // Allow all hosts for development
+    strictPort: false,
+    cors: true, // Enable CORS
+    hmr: {
+      clientPort: 5173,
+    },
   }
 })
