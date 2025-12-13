@@ -1,8 +1,8 @@
-# <div align="center"> BinaryShit </div>
+# <div align="center"> Binary Dump </div>
 
-## <div align="center"> The Ultimate Anonymous Shit-Dumping Platform 🚀 </div>
+## <div align="center"> The Ultimate Anonymous Dumping Platform 🚀 </div>
 
-BinaryShit is an anonymous platform designed for our class to **rant, share memories, and post anything freely**. Built **overnight**, it quickly became a hotspot for raw, unfiltered thoughts. However, with great anonymity comes great chaos—we faced **NoSQL injection, object injection, DDoS, and XSS attacks** on launch night. But after pulling an all-nighter securing the server, BinaryShit stood strong and remains **fully functional and attack-resistant**. We’re now working on **new updates** to make it even more interactive—maybe even for a wider audience!
+Binary Dump is an anonymous platform designed for our class to **rant, share memories, and post anything freely**. Built **overnight**, it quickly became a hotspot for raw, unfiltered thoughts. However, with great anonymity comes great chaos—we faced **NoSQL injection, object injection, DDoS, and XSS attacks** on launch night. But after pulling an all-nighter securing the server, Binary Dump stood strong and remains **fully functional and attack-resistant**. We’re now working on **new updates** to make it even more interactive—maybe even for a wider audience!
 
 ## 🚀 Features
 
@@ -27,11 +27,11 @@ BinaryShit is an anonymous platform designed for our class to **rant, share memo
 1. Clone the repository:
 
    ```
-   git clone https://github.com/Aakarsh-Kumar/BinaryShit.git
+   git clone https://github.com/Aakarsh-Kumar/binary-dump.git
    ```
 
    ```
-   cd BinaryShit
+   cd binary-dump
    ```
 
 2. Install dependencies:
@@ -87,7 +87,7 @@ Big thanks to **Rahul Marban** for helping me understand **server security with 
 ## 🗂 Project Structure
 
 ```
-BinaryShit/
+binary-dump/
 ├── server/
 │   ├── controllers          # Server & API handling
 │   ├── routes/              # API Endpoints
@@ -114,7 +114,7 @@ BinaryShit/
 
 - **Reactions & Comments**: More ways to interact with posts.
 - **Personalized Feeds**: Trending posts within the class.
-- **Expanded Access**: Who knows? Maybe BinaryShit goes beyond our class!
+- **Expanded Access**: Who knows? Maybe Binary Dump goes beyond our class!
 
 ---
 
@@ -126,9 +126,4 @@ BinaryShit/
 - 📱 Instagram: [@aakarsh_kumar25](https://www.instagram.com/aakarsh_kumar25/)
 
 ---
-
-## 🌟 Acknowledgments
-
-Special thanks to **Aditya** for the UI magic, **Rahul Marban** for security insights, and my entire class for making **BinaryShit** what it is today!
-
 ## Made with 💩 for unfiltered class memories
